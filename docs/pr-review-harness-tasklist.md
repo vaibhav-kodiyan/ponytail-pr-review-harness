@@ -48,7 +48,7 @@ engine and the verifier read, so nothing downstream re-branches on "PR vs local"
         branch → `branch-<slug>-review.md` (slug = branch name sanitized to `[a-z0-9-]`).
       **Done when:** a synthetic-repo run produces the worktree, `diff.patch`, and a
       `pr-meta.env` with all four keys; a dirty-tree bare run exits non-zero with `commit first`.
-- [ ] **1.2 `scripts/verify-net-zero.sh`** — `set -euo pipefail`. Source `pr-meta.env`.
+- [x] **1.2 `scripts/verify-net-zero.sh`** — `set -euo pipefail`. Source `pr-meta.env`.
       Assert HEAD unmoved, index clean, no new stash, no stray untracked/modified path
       **except** `docs/pr-reviews/$REPORT`. Exit non-zero on any violation. Source-agnostic —
       reads `$REPORT`, never hardcodes a report name.
