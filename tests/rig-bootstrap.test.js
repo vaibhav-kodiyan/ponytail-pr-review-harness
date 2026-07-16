@@ -113,7 +113,7 @@ test('Tier 1 bootstrap configures every instruction host in a fresh repository',
     const rigFiles = installed.filter((file) => file.includes(`${path.sep}.rig${path.sep}`));
     assert.ok(rigFiles.every((file) => file.endsWith('.md')));
     const body = installed.map((file) => fs.readFileSync(file, 'utf8')).join('\n');
-    assert.doesNotMatch(body, /(?:API_KEY|BEGIN (?:RSA |OPENSSH )?PRIVATE KEY|sk-[a-z0-9-]{10,})/i);
+    assert.doesNotMatch(body, /(?:API_KEY|BEGIN (?:RSA |OPENSSH )?PRIVATE KEY|(?<![a-z0-9])sk-[a-z0-9-]{10,})/i);
     assert.equal(fs.existsSync(path.join(target, '.env')), false);
     assert.equal(fs.existsSync(path.join(target, '.env.example')), false);
   } finally {

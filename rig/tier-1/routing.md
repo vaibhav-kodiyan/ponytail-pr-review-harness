@@ -2,11 +2,13 @@
 
 Read this file before acting. Apply `.rig/rules/ponytail.md` to every coding
 task, then choose the smallest set of skills whose trigger matches the work.
+In this source checkout, use `rig/tier-1/rules/ponytail.md` instead.
 Read each chosen skill completely before proceeding.
 
 Native skill hosts discover the names below automatically. On instruction-only
 hosts, `rig-<name>` maps to `.rig/skills/<name>/SKILL.md`; `ponytail` maps to
-`.rig/skills/ponytail/SKILL.md`.
+`.rig/skills/ponytail/SKILL.md`. In this source checkout, those sources live at
+`rig/tier-1/skills/<name>/SKILL.md` and `skills/ponytail/SKILL.md`.
 
 ## Pipeline
 

@@ -39,6 +39,8 @@ fi
 TIER=${TIER:-1}
 [ "$TIER" = 1 ] || { echo "rig: only Tier 1 is available" >&2; exit 1; }
 [ -d "$TARGET_ROOT" ] || { echo "rig: target is not a directory: $TARGET_ROOT" >&2; exit 1; }
+TARGET_ROOT=$(CDPATH= cd -- "$TARGET_ROOT" && pwd)
+[ "$SOURCE_ROOT" != "$TARGET_ROOT" ] || { echo "rig: target must differ from the Rig checkout: $SOURCE_ROOT" >&2; exit 1; }
 
 install_markdown() {
   source=$1
