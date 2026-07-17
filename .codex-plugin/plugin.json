@@ -3,11 +3,11 @@
   "version": "4.8.4",
   "description": "Lazy senior dev mode. Forces the simplest, shortest solution that actually works: YAGNI, stdlib first, no unrequested abstractions.",
   "author": {
-    "name": "Dietrich Gebert",
-    "url": "https://github.com/DietrichGebert"
+    "name": "Vaibhav Kodiyan",
+    "url": "https://github.com/vaibhav-kodiyan"
   },
-  "homepage": "https://github.com/DietrichGebert/ponytail",
-  "repository": "https://github.com/DietrichGebert/ponytail",
+  "homepage": "https://github.com/vaibhav-kodiyan/agentic-harness-demo",
+  "repository": "https://github.com/vaibhav-kodiyan/agentic-harness-demo",
   "license": "MIT",
   "keywords": ["yagni", "minimalism", "code-review", "productivity"],
   "skills": "./skills/",
@@ -16,10 +16,10 @@
     "displayName": "Ponytail",
     "shortDescription": "Lazy senior developer mode",
     "longDescription": "Prefer YAGNI, the standard library, native platform features, and the smallest correct implementation.",
-    "developerName": "Dietrich Gebert",
+    "developerName": "Vaibhav Kodiyan",
     "category": "Productivity",
     "capabilities": ["Instructions", "Lifecycle hooks"],
-    "websiteURL": "https://github.com/DietrichGebert/ponytail",
+    "websiteURL": "https://github.com/vaibhav-kodiyan/agentic-harness-demo",
     "defaultPrompt": [
       "Use Ponytail mode for this task.",
       "Review this diff for over-engineering.",

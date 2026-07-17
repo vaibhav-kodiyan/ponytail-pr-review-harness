@@ -5,7 +5,7 @@
 #   Run:    npx promptfoo@latest eval -c benchmarks/behavior.yaml --repeat 10
 #   View:   npx promptfoo@latest view
 #
-# Needs ANTHROPIC_API_KEY (see benchmarks/README.md). The grader (behavior.js)
+# Needs ANTHROPIC_API_KEY. The grader (behavior.js)
 # is proven separately by tests/behavior.test.js, which needs no API key.
 #
 # baseline is included as the control: the no-skill arm should mostly FAIL these

@@ -1,4 +1,4 @@
-# Rig by _Ravenwork_
+# Rig
 
 <img width="1600" height="1156" alt="image" src="https://github.com/user-attachments/assets/c3f33dff-a780-4fb4-8e8c-148b88bed0cf" />
 
@@ -61,16 +61,16 @@ and `.agents/skills/`; the bootstrap copies them unchanged into target repos.
 
 | Phase | Rig owner |
 |---|---|
-| Intent and acceptance tests | Grilling, from mattpocock |
-| Product and technical design | Product design, from gstack doctrine |
+| Intent and acceptance tests | Grilling |
+| Product and technical design | Product design |
 | Implementation | Ponytail |
-| Execution and parallelism | Execution, from superpowers |
-| TDD | Curated superpowers + mattpocock graft |
-| Debugging | Curated superpowers + mattpocock + gstack graft |
-| Code review | Curated superpowers + mattpocock + gstack graft |
+| Execution and parallelism | Execution |
+| TDD | Curated graft |
+| Debugging | Curated graft |
+| Code review | Curated graft |
 
-The grafted skills label their checks with source provenance. They merge the
-distinctive parts of each source instead of concatenating source documents.
+The curated skills label their checks by workflow phase. They merge the
+distinctive parts of each workflow instead of concatenating source documents.
 
 ## Tier 1 Boundary
 
@@ -93,10 +93,3 @@ npm run test:rig
 The test bootstraps a fresh temporary repository and checks the complete shared
 payload, every instruction adapter, preservation of existing host files, the
 markdown-only boundary, and absence of secret placeholders.
-
-## Relationship to Ponytail
-
-Rig is a separate project. It inherits Ponytail's implementation skill (and the
-always-on rule that activates it), not Ponytail's full plugin distribution or
-companion skills. Source stays in `skills/ponytail/`; Tier 1 installs that skill
-beside Rig's other curated skills.

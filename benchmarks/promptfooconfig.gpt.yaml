@@ -1,4 +1,4 @@
-# Reproduces Pyseph's issue-65 setup: baseline vs ponytail, gpt-4.1-mini + gpt-5.4-mini.
+# Reproduces the issue-65 setup: baseline vs ponytail, gpt-4.1-mini + gpt-5.4-mini.
 # Reuses the repo's arms + loc/correctness gates. Needs OPENAI_API_KEY in ../.env.
 #   npx promptfoo@latest eval -c benchmarks/promptfooconfig.gpt.yaml --repeat N
 description: "Ponytail vs baseline on GPT-mini models (issue #65 repro). LOC + correctness gate."

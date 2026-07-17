@@ -1,7 +1,7 @@
 ---
 name: ponytail
 description: "Lazy senior dev mode for any coding task (write, refactor, fix, review): YAGNI, stdlib first, no unrequested abstractions. Not for non-coding requests."
-homepage: https://github.com/DietrichGebert/ponytail
+homepage: https://github.com/vaibhav-kodiyan/agentic-harness-demo
 license: MIT
 ---
 

@@ -4,7 +4,7 @@
 #   View:  npx promptfoo@latest view
 #   Share: npx promptfoo@latest share   (publishes a hosted report URL)
 #
-# Needs ANTHROPIC_API_KEY in the environment or a .env file (see benchmarks/README.md).
+# Needs ANTHROPIC_API_KEY in the environment or a .env file.
 # Caveman arm uses JuliusBrussee/caveman SKILL.md (MIT), vendored at arms/caveman-SKILL.md.
 description: "Ponytail vs caveman vs no-skill: same model, same tasks. Measures code LOC (deterministic) and tokens/cost (API telemetry)."
 

@@ -14,7 +14,7 @@ const fs = require('fs');
 const path = require('path');
 
 const ROOT = path.join(__dirname, '..');
-const HOMEPAGE = 'https://github.com/DietrichGebert/ponytail';
+const HOMEPAGE = 'https://github.com/vaibhav-kodiyan/agentic-harness-demo';
 
 const DESCRIPTIONS = {
   'ponytail': 'Lazy senior dev mode for any coding task (write, refactor, fix, review): YAGNI, stdlib first, no unrequested abstractions. Not for non-coding requests.',
