@@ -62,13 +62,13 @@ ensure_line() {
 
 echo "Installing Rig Tier 1 into $TARGET_ROOT"
 
-# ponytail: an explicit list is the Tier 1 proto-manifest; replace it with the
+# rig: an explicit list is the Tier 1 proto-manifest; replace it with the
 # Tier 2 materializer only when another tier needs composition or drift checks.
 install_markdown rig/tier-1/routing.md .rig/routing.md
-install_markdown rig/tier-1/rules/ponytail.md .rig/rules/ponytail.md
+install_markdown rig/tier-1/rules/rig.md .rig/rules/rig.md
 install_markdown rig/tier-1/skills/grilling/SKILL.md .rig/skills/grilling/SKILL.md
 install_markdown rig/tier-1/skills/product-design/SKILL.md .rig/skills/product-design/SKILL.md
-install_markdown skills/ponytail/SKILL.md .rig/skills/ponytail/SKILL.md
+install_markdown skills/rig/SKILL.md .rig/skills/implementation/SKILL.md
 install_markdown rig/tier-1/skills/execution/SKILL.md .rig/skills/execution/SKILL.md
 install_markdown rig/tier-1/skills/tdd/SKILL.md .rig/skills/tdd/SKILL.md
 install_markdown rig/tier-1/skills/debugging/SKILL.md .rig/skills/debugging/SKILL.md
@@ -76,7 +76,7 @@ install_markdown rig/tier-1/skills/code-review/SKILL.md .rig/skills/code-review/
 
 install_markdown .claude/skills/rig-grilling/SKILL.md .claude/skills/rig-grilling/SKILL.md
 install_markdown .claude/skills/rig-product-design/SKILL.md .claude/skills/rig-product-design/SKILL.md
-install_markdown .claude/skills/rig-ponytail/SKILL.md .claude/skills/rig-ponytail/SKILL.md
+install_markdown .claude/skills/rig-implementation/SKILL.md .claude/skills/rig-implementation/SKILL.md
 install_markdown .claude/skills/rig-execution/SKILL.md .claude/skills/rig-execution/SKILL.md
 install_markdown .claude/skills/rig-tdd/SKILL.md .claude/skills/rig-tdd/SKILL.md
 install_markdown .claude/skills/rig-debugging/SKILL.md .claude/skills/rig-debugging/SKILL.md
@@ -84,7 +84,7 @@ install_markdown .claude/skills/rig-code-review/SKILL.md .claude/skills/rig-code
 
 install_markdown .agents/skills/rig-grilling/SKILL.md .agents/skills/rig-grilling/SKILL.md
 install_markdown .agents/skills/rig-product-design/SKILL.md .agents/skills/rig-product-design/SKILL.md
-install_markdown .agents/skills/rig-ponytail/SKILL.md .agents/skills/rig-ponytail/SKILL.md
+install_markdown .agents/skills/rig-implementation/SKILL.md .agents/skills/rig-implementation/SKILL.md
 install_markdown .agents/skills/rig-execution/SKILL.md .agents/skills/rig-execution/SKILL.md
 install_markdown .agents/skills/rig-tdd/SKILL.md .agents/skills/rig-tdd/SKILL.md
 install_markdown .agents/skills/rig-debugging/SKILL.md .agents/skills/rig-debugging/SKILL.md
@@ -92,8 +92,8 @@ install_markdown .agents/skills/rig-code-review/SKILL.md .agents/skills/rig-code
 
 ensure_line CLAUDE.md 'Before acting, read `.rig/routing.md` and route this task through its skill table.'
 install_markdown rig/tier-1/adapters/cursor.mdc .cursor/rules/rig.mdc
-install_markdown rig/tier-1/adapters/pointer.md .windsurf/rules/rig.md
-install_markdown rig/tier-1/adapters/pointer.md .clinerules/rig.md
+install_markdown rig/tier-1/adapters/windsurf.md .windsurf/rules/rig.md
+install_markdown rig/tier-1/adapters/cline.md .clinerules/rig.md
 install_markdown rig/tier-1/adapters/pointer.md .agents/rules/rig.md
 install_markdown rig/tier-1/adapters/kiro.md .kiro/steering/rig.md
 ensure_line AGENTS.md 'Before acting, read `.rig/routing.md` and route this task through its skill table.'

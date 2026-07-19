@@ -13,14 +13,14 @@ const { pathToFileURL } = require('url');
 // plugin resolves its state path once at load (as it does under a real OpenCode
 // process, where XDG_CONFIG_HOME is already set). The dynamic import below runs
 // after this assignment, so the ordering holds.
-const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'ponytail-opencode-'));
+const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'rig-opencode-'));
 process.env.XDG_CONFIG_HOME = tmp;
-delete process.env.PONYTAIL_DEFAULT_MODE;
-const statePath = path.join(tmp, 'opencode', '.ponytail-active');
+delete process.env.RIG_DEFAULT_MODE;
+const statePath = path.join(tmp, 'opencode', '.rig-active');
 
 let loadPlugin, parseCommandFile;
 test.before(async () => {
-  const url = pathToFileURL(path.join(__dirname, '..', '.opencode', 'plugins', 'ponytail.mjs'));
+  const url = pathToFileURL(path.join(__dirname, '..', '.opencode', 'plugins', 'rig.mjs'));
   const mod = await import(url);
   loadPlugin = mod.default;
   parseCommandFile = mod.parseCommandFile;
@@ -36,21 +36,21 @@ test('system.transform injects the ruleset at the default mode (full)', async ()
   const hooks = await loadPlugin({});
   const system = await transform(hooks);
   assert.equal(system.length, 1);
-  assert.match(system[0], /PONYTAIL MODE ACTIVE — level: full/);
+  assert.match(system[0], /RIG MODE ACTIVE — level: full/);
   assert.match(system[0], /lazy senior developer/);
 });
 
-test('command.execute.before persists /ponytail ultra, transform follows it', async () => {
+test('command.execute.before persists /rig ultra, transform follows it', async () => {
   const hooks = await loadPlugin({});
-  await hooks['command.execute.before']({ command: 'ponytail', arguments: 'ultra', sessionID: 's' });
+  await hooks['command.execute.before']({ command: 'rig', arguments: 'ultra', sessionID: 's' });
   assert.equal(fs.readFileSync(statePath, 'utf8'), 'ultra');
   const system = await transform(hooks);
-  assert.match(system[0], /PONYTAIL MODE ACTIVE — level: ultra/);
+  assert.match(system[0], /RIG MODE ACTIVE — level: ultra/);
 });
 
-test('/ponytail off persists off and transform injects nothing', async () => {
+test('/rig off persists off and transform injects nothing', async () => {
   const hooks = await loadPlugin({});
-  await hooks['command.execute.before']({ command: 'ponytail', arguments: 'off', sessionID: 's' });
+  await hooks['command.execute.before']({ command: 'rig', arguments: 'off', sessionID: 's' });
   assert.equal(fs.readFileSync(statePath, 'utf8'), 'off');
   const system = await transform(hooks);
   assert.deepEqual(system, []);

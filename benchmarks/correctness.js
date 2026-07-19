@@ -15,7 +15,7 @@ const path = require('path');
 function extractBlocks(text) {
   text = String(text || '');
   const matches = [...text.matchAll(/```(\w*)\r?\n([\s\S]*?)```/g)];
-  // ponytail: terse models often answer with bare, unfenced code. Treat the whole
+  // rig: terse models often answer with bare, unfenced code. Treat the whole
   // response as one block so the gate scores the code instead of reporting "no block".
   if (matches.length === 0 && text.trim()) return [{ lang: '', code: text }];
   return matches.map((m) => ({ lang: (m[1] || '').toLowerCase(), code: m[2] }));
@@ -42,7 +42,7 @@ function exec(cmd, opts = {}) {
   }
 }
 
-// ponytail: probe once at load; macOS and many Linux images ship python3 only.
+// rig: probe once at load; macOS and many Linux images ship python3 only.
 let pythonCmd;
 function python() {
   if (pythonCmd) return pythonCmd;
@@ -58,7 +58,7 @@ function python() {
 
 // Write content to a temp file, return the path.
 function tmpFile(ext, content) {
-  const p = path.join(os.tmpdir(), `ponytail-bench-${Date.now()}-${Math.random().toString(36).slice(2)}${ext}`);
+  const p = path.join(os.tmpdir(), `rig-bench-${Date.now()}-${Math.random().toString(36).slice(2)}${ext}`);
   fs.writeFileSync(p, content);
   return p;
 }

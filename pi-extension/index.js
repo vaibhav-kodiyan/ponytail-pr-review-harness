@@ -9,8 +9,8 @@ const {
   normalizePersistedMode,
   isDeactivationCommand,
   writeDefaultMode,
-} = require("../hooks/ponytail-config.js");
-const { getPonytailInstructions, filterSkillBodyForMode } = require("../hooks/ponytail-instructions.js");
+} = require("../hooks/rig-config.js");
+const { getRigInstructions, filterSkillBodyForMode } = require("../hooks/rig-instructions.js");
 
 export { filterSkillBodyForMode };
 export const readDefaultMode = getDefaultMode;
@@ -21,7 +21,7 @@ export function resolveSessionMode(entries, fallbackMode = DEFAULT_MODE) {
 
   for (let i = entries.length - 1; i >= 0; i -= 1) {
     const entry = entries[i];
-    if (entry?.type !== "custom" || entry?.customType !== "ponytail-mode") continue;
+    if (entry?.type !== "custom" || entry?.customType !== "rig-mode") continue;
 
     const mode = normalizePersistedMode(entry?.data?.mode);
     if (mode) return mode;
@@ -30,7 +30,7 @@ export function resolveSessionMode(entries, fallbackMode = DEFAULT_MODE) {
   return fallback;
 }
 
-export function parsePonytailCommand(text, defaultMode = DEFAULT_MODE) {
+export function parseRigCommand(text, defaultMode = DEFAULT_MODE) {
   const fallback = normalizePersistedMode(defaultMode) || DEFAULT_MODE;
   const normalizedText = String(text || "").trim().toLowerCase();
 
@@ -53,7 +53,7 @@ export function parsePonytailCommand(text, defaultMode = DEFAULT_MODE) {
 
 export { writeDefaultMode };
 
-export default function ponytailExtension(pi) {
+export default function rigExtension(pi) {
   let currentMode = DEFAULT_MODE;
   let configuredDefaultMode = getDefaultMode();
   let isActive = false;
@@ -66,14 +66,14 @@ export default function ponytailExtension(pi) {
     if (!c?.ui?.setStatus || !c.ui.theme?.fg) return;
     const theme = c.ui.theme;
     if (currentMode === "off") {
-      c.ui.setStatus("ponytail", "");
+      c.ui.setStatus("rig", "");
       return;
     }
     const levelIcons = { lite: "🌿", full: "⚡", ultra: "🔥" };
     const icon = levelIcons[currentMode] || "";
     const label = currentMode.toUpperCase();
     const indicator = isActive ? theme.fg("accent", "●") : theme.fg("dim", "○");
-    c.ui.setStatus("ponytail", indicator + " 🐴 " + theme.fg("muted", "ponytail: ") + theme.fg("text", icon + " " + label));
+    c.ui.setStatus("rig", indicator + " 🐴 " + theme.fg("muted", "rig: ") + theme.fg("text", icon + " " + label));
   }
 
   const setMode = (mode, ctx) => {
@@ -81,9 +81,9 @@ export default function ponytailExtension(pi) {
     if (!normalized) return;
 
     currentMode = normalized;
-    pi.appendEntry("ponytail-mode", { mode: normalized });
+    pi.appendEntry("rig-mode", { mode: normalized });
     syncStatus(ctx);
-    ctx?.ui?.notify?.(`Ponytail mode set to ${normalized}.`, "info");
+    ctx?.ui?.notify?.(`Rig mode set to ${normalized}.`, "info");
   };
 
   const sendAlias = (skillName, args, ctx) => {
@@ -99,13 +99,13 @@ export default function ponytailExtension(pi) {
     pi.sendUserMessage(message);
   };
 
-  pi.registerCommand("ponytail", {
-    description: "Set or report Ponytail mode",
+  pi.registerCommand("rig", {
+    description: "Set or report Rig mode",
     handler: async (args, ctx) => {
-      const parsed = parsePonytailCommand(args, configuredDefaultMode);
+      const parsed = parseRigCommand(args, configuredDefaultMode);
 
       if (parsed.type === "status") {
-        ctx?.ui?.notify?.(`Ponytail: current ${currentMode} • default ${configuredDefaultMode}`, "info");
+        ctx?.ui?.notify?.(`Rig: current ${currentMode} • default ${configuredDefaultMode}`, "info");
         return;
       }
 
@@ -114,7 +114,7 @@ export default function ponytailExtension(pi) {
         if (written) {
           configuredDefaultMode = getDefaultMode();
           const message = configuredDefaultMode === written
-            ? `Default Ponytail mode set to ${written}.`
+            ? `Default Rig mode set to ${written}.`
             : `Saved default ${written}, but env override keeps default at ${configuredDefaultMode}.`;
           ctx?.ui?.notify?.(message, "info");
         }
@@ -126,33 +126,33 @@ export default function ponytailExtension(pi) {
         return;
       }
 
-      ctx?.ui?.notify?.("Unknown or unsupported /ponytail mode.", "warning");
+      ctx?.ui?.notify?.("Unknown or unsupported /rig mode.", "warning");
     },
   });
 
-  pi.registerCommand("ponytail-review", {
-    description: "Run /skill:ponytail-review",
-    handler: (_args, ctx) => sendAlias("/skill:ponytail-review", "", ctx),
+  pi.registerCommand("rig-review", {
+    description: "Run /skill:rig-review",
+    handler: (_args, ctx) => sendAlias("/skill:rig-review", "", ctx),
   });
 
-  pi.registerCommand("ponytail-audit", {
-    description: "Run /skill:ponytail-audit",
-    handler: (_args, ctx) => sendAlias("/skill:ponytail-audit", "", ctx),
+  pi.registerCommand("rig-audit", {
+    description: "Run /skill:rig-audit",
+    handler: (_args, ctx) => sendAlias("/skill:rig-audit", "", ctx),
   });
 
-  pi.registerCommand("ponytail-gain", {
-    description: "Run /skill:ponytail-gain",
-    handler: (_args, ctx) => sendAlias("/skill:ponytail-gain", "", ctx),
+  pi.registerCommand("rig-gain", {
+    description: "Run /skill:rig-gain",
+    handler: (_args, ctx) => sendAlias("/skill:rig-gain", "", ctx),
   });
 
-  pi.registerCommand("ponytail-debt", {
-    description: "Run /skill:ponytail-debt",
-    handler: (_args, ctx) => sendAlias("/skill:ponytail-debt", "", ctx),
+  pi.registerCommand("rig-debt", {
+    description: "Run /skill:rig-debt",
+    handler: (_args, ctx) => sendAlias("/skill:rig-debt", "", ctx),
   });
 
-  pi.registerCommand("ponytail-help", {
-    description: "Run /skill:ponytail-help",
-    handler: (_args, ctx) => sendAlias("/skill:ponytail-help", "", ctx),
+  pi.registerCommand("rig-help", {
+    description: "Run /skill:rig-help",
+    handler: (_args, ctx) => sendAlias("/skill:rig-help", "", ctx),
   });
 
   pi.on("input", async (event) => {
@@ -169,7 +169,7 @@ export default function ponytailExtension(pi) {
     configuredDefaultMode = getDefaultMode();
     currentMode = resolveSessionMode(entries, configuredDefaultMode);
     syncStatus(ctx);
-    ctx?.ui?.notify?.(`Ponytail loaded: ${currentMode}`, "info");
+    ctx?.ui?.notify?.(`Rig loaded: ${currentMode}`, "info");
   });
 
   pi.on("agent_start", async (_event, ctx) => {
@@ -184,6 +184,6 @@ export default function ponytailExtension(pi) {
 
   pi.on("before_agent_start", async (event) => {
     if (!currentMode || currentMode === "off") return;
-    return { systemPrompt: `${event.systemPrompt}\n\n${getPonytailInstructions(currentMode)}` };
+    return { systemPrompt: `${event.systemPrompt}\n\n${getRigInstructions(currentMode)}` };
   });
 }

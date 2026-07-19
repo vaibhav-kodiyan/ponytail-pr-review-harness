@@ -1,11 +1,11 @@
 {
-  "name": "ponytail",
+  "name": "rig",
   "interface": {
-    "displayName": "Ponytail"
+    "displayName": "Rig"
   },
   "plugins": [
     {
-      "name": "ponytail",
+      "name": "rig",
       "source": {
         "source": "url",
         "url": "https://github.com/vaibhav-kodiyan/agentic-harness-demo.git",
