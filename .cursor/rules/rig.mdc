@@ -4,33 +4,79 @@ globs:
 alwaysApply: true
 ---
 
-# Rig, lazy senior dev mode
+# Rig Agent Instructions
 
-You are a lazy senior developer. Lazy means efficient, not careless. The best code is the code never written.
+This repository is **Rig**, a curated, host-agnostic toolbox for coding agents.
+It uses a two-gate workflow:
 
-Before writing any code, stop at the first rung that holds:
+1. `rig-grilling` freezes intent and acceptance tests.
+2. `rig-product-design` freezes the technical approach.
+3. `rig-implementation` implements the smallest correct diff.
+4. `rig-execution`, `rig-tdd`, `rig-debugging`, and `rig-code-review` handle
+   coordinated execution, test-driven slices, root-cause work, and review.
+
+`rig-implementation` is still always active for implementation, but it is one
+skill inside Rig's broader workflow. Do not treat every task as only a
+`rig-implementation` task.
+
+## Project Context
+
+- Tier 1 is the markdown-only bootstrap: fixed file list, no manifest parser,
+  no runtime, no keys, no `.env` handling.
+- Tier 2 Basic is the credentialed multi-host MCP configurator. Its active docs
+  live in `project-dev-docs/tier-2-design-docs/basic/`.
+- Tier 2 Basic targets the full Rig adapter matrix for deliverability, but
+  each MCP renderer remains #7-gated by doc-backed verification before it ships.
+- Basic uses one JSON manifest, semantic MCP servers, compatibility variants,
+  host-native renderers, non-destructive config merge, and value-free credential
+  references.
+
+## Working Rules
+
+- Route through `rig/tier-1/routing.md` first; do not substitute a nearby skill
+  for the named owner.
+- Preserve Gate 1 acceptance artifacts unless the task is explicitly routed back
+  to grilling.
+- For design work, update the relevant decision log and companion spec together.
+- When asking the user to choose, give concrete options plus a recommendation.
+  Keep one decision per question unless the user asks for a broader menu.
+
+## Rig Implementation Rule
+
+Lazy means efficient, not careless. Before writing code, stop at the first rung
+that holds:
 
 1. Does this need to be built at all? (YAGNI)
-2. Does it already exist in this codebase? Reuse the helper, util, or pattern that's already here, don't re-write it.
+2. Does it already exist in this codebase? Reuse the helper, util, or pattern.
 3. Does the standard library already do this? Use it.
 4. Does a native platform feature cover it? Use it.
 5. Does an already-installed dependency solve it? Use it.
 6. Can this be one line? Make it one line.
 7. Only then: write the minimum code that works.
 
-The ladder runs after you understand the problem, not instead of it: read the task and the code it touches, trace the real flow end to end, then climb.
+The ladder runs after you understand the problem, not instead of it: read the
+task and the code it touches, trace the real flow end to end, then climb.
 
-Bug fix = root cause, not symptom: a report names a symptom. Grep every caller of the function you touch and fix the shared function once — one guard there is a smaller diff than one per caller, and patching only the path the ticket names leaves a sibling caller still broken.
+Bug fix = root cause, not symptom. Grep every caller of the function you touch
+and fix the shared function once.
 
 Rules:
 
-- No abstractions that weren't explicitly requested.
+- No abstractions that were not explicitly requested.
 - No new dependency if it can be avoided.
 - No boilerplate nobody asked for.
 - Deletion over addition. Boring over clever. Fewest files possible.
-- Shortest working diff wins, but only once you understand the problem. The smallest change in the wrong place isn't lazy, it's a second bug.
-- Question complex requests: "Do you actually need X, or does Y cover it?"
-- Pick the edge-case-correct option when two stdlib approaches are the same size, lazy means less code, not the flimsier algorithm.
-- Mark intentional simplifications with a `rig:` comment. If the shortcut has a known ceiling (global lock, O(n²) scan, naive heuristic), the comment names the ceiling and the upgrade path.
+- Shortest working diff wins, but only once you understand the problem.
+- Pick the edge-case-correct option when two standard-library approaches are the
+  same size; lazy means less code, not the flimsier algorithm.
+- Mark intentional simplifications with a `rig:` comment. If the shortcut
+  has a known ceiling, name the ceiling and the upgrade path.
 
-Not lazy about: understanding the problem (read it fully and trace the real flow before picking a rung, a small diff you don't understand is just laziness dressed up as efficiency), input validation at trust boundaries, error handling that prevents data loss, security, accessibility, the calibration real hardware needs (the platform is never the spec ideal, a clock drifts, a sensor reads off), anything explicitly requested. Lazy code without its check is unfinished: non-trivial logic leaves ONE runnable check behind, the smallest thing that fails if the logic breaks (an assert-based demo/self-check or one small test file; no frameworks, no fixtures). Trivial one-liners need no test.
+Not lazy about: understanding the problem, trust-boundary validation, error
+handling that prevents data loss, security, accessibility, real-hardware
+calibration, and anything explicitly requested. Lazy code without its check is unfinished:
+non-trivial logic leaves ONE runnable check behind; trivial one-liners need no
+test.
+
+Adapter invariant: this file must still carry Rig's lazy senior rule,
+input validation at trust boundaries, and the warning to label any naive heuristic with its ceiling and upgrade path.

@@ -42,5 +42,10 @@ description: Drive one behavior at a time through a strict red-green-refactor lo
 and passing after it, all relevant tests green, and no debug-only test artifacts
 left behind.
 
+## Decision Questions
+
+When asking the user to choose, give concrete options plus a recommendation.
+Keep one decision per question unless the user asks for a broader menu.
+
 Provenance: each check is labeled `superpowers`, `mattpocock`, or both. gstack
 is not a TDD source and is intentionally absent.

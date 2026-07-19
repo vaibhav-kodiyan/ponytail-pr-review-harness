@@ -29,6 +29,13 @@ If Gate 1 is genuinely wrong, stop implementation and return the proposed
 change to `rig-grilling`. Prose cannot physically prevent an edit: this Tier 1
 markdown-only guard is best-effort on both supported hosts.
 
+## Decision Questions
+
+When asking the user to choose, give concrete options plus a recommendation.
+Keep one decision per question unless the user asks for a broader menu. Do not
+hide a meaningful fork behind a yes/no question when the real choice has more
+than two viable paths.
+
 ## Skill Index
 
 | Skill | Read when |

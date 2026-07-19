@@ -35,7 +35,7 @@ function identifyTask(task) {
 // Run a command, return { ok, stderr }.
 function exec(cmd, opts = {}) {
   try {
-    execSync(cmd, { timeout: 10_000, encoding: 'utf8', stdio: 'pipe', ...opts });
+    execSync(cmd, { timeout: 30_000, encoding: 'utf8', stdio: 'pipe', ...opts });
     return { ok: true, stderr: '' };
   } catch (e) {
     return { ok: false, stderr: (e.stderr || e.message || '').slice(0, 500) };

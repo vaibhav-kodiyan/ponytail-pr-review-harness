@@ -20,11 +20,5 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Check rule copies
-        run: node scripts/check-rule-copies.js
-
-      - name: Check version consistency
-        run: node scripts/check-versions.js
-
       - name: Run tests
         run: npm test

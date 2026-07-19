@@ -22,9 +22,15 @@ manifest parser, sync engine, or generated `.env` files.
 
 ## Checks
 
+`npm test` is the full CI gate: it runs `scripts/check-rule-copies.js`,
+`scripts/check-versions.js`, the Node test suite, and the pi-extension tests —
+the same commands `.github/workflows/test.yml` runs. Run it locally and confirm
+it is green before pushing; do not push on a red or unrun suite. `npm run
+test:rig` is a fast subset (the bootstrap test only) and is not a substitute.
+
 ```sh
-npm run test:rig
-npm test
+npm test        # full CI gate — must pass before push
+npm run test:rig  # fast bootstrap-only subset
 ```
 
 The rest of the repository is the existing Rig component and its adapters.

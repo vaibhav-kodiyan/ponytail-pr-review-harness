@@ -6,8 +6,9 @@ Exported 2026-07-16 from the grill session. Companion decisions log:
 `../tier-1-design-docs/tier-1-mvp-design.md`.
 
 **Status:** partially grilled. The Basic/Advanced split is decided (G11); the load-bearing
-fork inside Advanced (G11a) is still OPEN — see §5. This doc is safe to build **Tier 2 Basic**
-from; **Tier 2 Advanced** is not yet locked.
+fork inside Advanced (G11a) is still OPEN — see §5. **Tier 2 Basic is now finalized in
+`basic/basic-design.md`** (which supersedes the Basic material in §2/§3 below); **Tier 2
+Advanced** is not yet locked.
 
 The harness is called **Rig** (G10a).
 
