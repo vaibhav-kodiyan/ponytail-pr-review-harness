@@ -2,17 +2,18 @@ Before acting, read `rig/tier-1/routing.md` and route this task through its skil
 
 # Rig Agent Instructions
 
-This repository is **Rig**, not just Ponytail. Rig is a curated, host-agnostic
-toolbox for coding agents. It uses a two-gate workflow:
+This repository is **Rig**, a curated, host-agnostic toolbox for coding agents.
+It uses a two-gate workflow:
 
 1. `rig-grilling` freezes intent and acceptance tests.
 2. `rig-product-design` freezes the technical approach.
-3. `ponytail` implements the smallest correct diff.
+3. `rig-implementation` implements the smallest correct diff.
 4. `rig-execution`, `rig-tdd`, `rig-debugging`, and `rig-code-review` handle
    coordinated execution, test-driven slices, root-cause work, and review.
 
-Ponytail is still always active for implementation, but it is one skill inside
-Rig's broader workflow. Do not treat every task as only a Ponytail task.
+`rig-implementation` is still always active for implementation, but it is one
+skill inside Rig's broader workflow. Do not treat every task as only a
+`rig-implementation` task.
 
 ## Project Context
 
@@ -20,7 +21,7 @@ Rig's broader workflow. Do not treat every task as only a Ponytail task.
   no runtime, no keys, no `.env` handling.
 - Tier 2 Basic is the credentialed multi-host MCP configurator. Its active docs
   live in `project-dev-docs/tier-2-design-docs/basic/`.
-- Tier 2 Basic targets the full Ponytail adapter matrix for deliverability, but
+- Tier 2 Basic targets the full Rig adapter matrix for deliverability, but
   each MCP renderer remains #7-gated by doc-backed verification before it ships.
 - Basic uses one JSON manifest, semantic MCP servers, compatibility variants,
   host-native renderers, non-destructive config merge, and value-free credential
@@ -36,7 +37,7 @@ Rig's broader workflow. Do not treat every task as only a Ponytail task.
 - When asking the user to choose, give concrete options plus a recommendation.
   Keep one decision per question unless the user asks for a broader menu.
 
-## Ponytail Implementation Rule
+## Rig Implementation Rule
 
 Lazy means efficient, not careless. Before writing code, stop at the first rung
 that holds:
@@ -64,7 +65,7 @@ Rules:
 - Shortest working diff wins, but only once you understand the problem.
 - Pick the edge-case-correct option when two standard-library approaches are the
   same size; lazy means less code, not the flimsier algorithm.
-- Mark intentional simplifications with a `ponytail:` comment. If the shortcut
+- Mark intentional simplifications with a `rig:` comment. If the shortcut
   has a known ceiling, name the ceiling and the upgrade path.
 
 Not lazy about: understanding the problem, trust-boundary validation, error
@@ -73,5 +74,5 @@ calibration, and anything explicitly requested. Lazy code without its check is u
 non-trivial logic leaves ONE runnable check behind; trivial one-liners need no
 test.
 
-Adapter invariant: this file must still carry Ponytail's lazy senior rule,
+Adapter invariant: this file must still carry Rig's lazy senior rule,
 input validation at trust boundaries, and the warning to label any naive heuristic with its ceiling and upgrade path.

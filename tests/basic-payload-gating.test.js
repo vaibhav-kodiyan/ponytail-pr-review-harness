@@ -23,11 +23,11 @@ test('TP-C2.1 selected hosts prune unselected payload adapters', () => {
     materialize(target, { hosts: ['claude'], mcp_servers: [] });
 
     assert.ok(exists(target, '.rig/routing.md'), 'shared router is installed');
-    assert.ok(exists(target, '.rig/rules/ponytail.md'), 'shared ponytail rule is installed');
-    assert.ok(exists(target, '.claude/skills/rig-ponytail/SKILL.md'), 'Claude payload is installed');
+    assert.ok(exists(target, '.rig/rules/rig.md'), 'shared rig rule is installed');
+    assert.ok(exists(target, '.claude/skills/rig-implementation/SKILL.md'), 'Claude payload is installed');
 
     for (const rel of [
-      '.agents/skills/rig-ponytail/SKILL.md',
+      '.agents/skills/rig-implementation/SKILL.md',
       '.agents/rules/rig.md',
       '.cursor/rules/rig.mdc',
       '.kiro/steering/rig.md',
@@ -47,7 +47,7 @@ test('TP-C2.2 native-skill-only hosts do not install .rig/skills fallback copies
     assert.ok(exists(target, '.claude/skills/rig-grilling/SKILL.md'), 'Claude native skills installed');
     assert.ok(exists(target, '.agents/skills/rig-grilling/SKILL.md'), 'Codex native skills installed');
     assert.ok(exists(target, '.rig/routing.md'), 'shared router installed');
-    assert.ok(exists(target, '.rig/rules/ponytail.md'), 'shared ponytail rule installed');
+    assert.ok(exists(target, '.rig/rules/rig.md'), 'shared rig rule installed');
     assert.equal(exists(target, '.rig/skills/grilling/SKILL.md'), false, '.rig/skills omitted');
   });
 });
@@ -59,7 +59,7 @@ test('TP-C2.3 selecting an instruction-only host installs .rig/skills fallback c
     for (const rel of [
       '.rig/skills/grilling/SKILL.md',
       '.rig/skills/product-design/SKILL.md',
-      '.rig/skills/ponytail/SKILL.md',
+      '.rig/skills/implementation/SKILL.md',
       '.rig/skills/execution/SKILL.md',
       '.rig/skills/tdd/SKILL.md',
       '.rig/skills/debugging/SKILL.md',

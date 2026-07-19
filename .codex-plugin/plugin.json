@@ -1,5 +1,5 @@
 {
-  "name": "ponytail",
+  "name": "rig",
   "version": "4.8.4",
   "description": "Lazy senior dev mode. Forces the simplest, shortest solution that actually works: YAGNI, stdlib first, no unrequested abstractions.",
   "author": {
@@ -13,7 +13,7 @@
   "skills": "./skills/",
   "hooks": "./hooks/claude-codex-hooks.json",
   "interface": {
-    "displayName": "Ponytail",
+    "displayName": "Rig",
     "shortDescription": "Lazy senior developer mode",
     "longDescription": "Prefer YAGNI, the standard library, native platform features, and the smallest correct implementation.",
     "developerName": "Vaibhav Kodiyan",
@@ -21,7 +21,7 @@
     "capabilities": ["Instructions", "Lifecycle hooks"],
     "websiteURL": "https://github.com/vaibhav-kodiyan/agentic-harness-demo",
     "defaultPrompt": [
-      "Use Ponytail mode for this task.",
+      "Use Rig mode for this task.",
       "Review this diff for over-engineering.",
       "Find the smallest correct implementation."
     ],

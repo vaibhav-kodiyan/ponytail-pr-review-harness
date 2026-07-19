@@ -10,27 +10,49 @@ const root = path.join(__dirname, '..');
 const pointer = 'Before acting, read `.rig/routing.md` and route this task through its skill table.';
 
 const sharedSkills = [
-  'grilling',
-  'product-design',
-  'ponytail',
-  'execution',
-  'tdd',
-  'debugging',
-  'code-review',
+  ['grilling', 'rig/tier-1/skills/grilling/SKILL.md'],
+  ['product-design', 'rig/tier-1/skills/product-design/SKILL.md'],
+  ['implementation', 'skills/rig/SKILL.md'],
+  ['execution', 'rig/tier-1/skills/execution/SKILL.md'],
+  ['tdd', 'rig/tier-1/skills/tdd/SKILL.md'],
+  ['debugging', 'rig/tier-1/skills/debugging/SKILL.md'],
+  ['code-review', 'rig/tier-1/skills/code-review/SKILL.md'],
 ];
 
 function read(target, relativePath) {
   return fs.readFileSync(path.join(target, relativePath), 'utf8');
 }
 
+function backtickedRigPaths(text) {
+  return [...text.matchAll(/`(\.rig\/[^`]+)`/g)]
+    .map((match) => match[1])
+    .filter((relativePath) => !/[<>{}*]/.test(relativePath));
+}
+
+function nativeSkillNames(host) {
+  return sharedSkills.map(([skill]) => {
+    const skillFile = `${host}/skills/rig-${skill}/SKILL.md`;
+    const match = read(root, skillFile).match(/^name:\s*(\S+)\s*$/m);
+    assert.ok(match, `${skillFile} should declare a name`);
+    return match[1];
+  }).sort();
+}
+
 test('committed Claude and Codex skills match their canonical Tier 1 sources', () => {
-  for (const skill of sharedSkills) {
-    const source = skill === 'ponytail'
-      ? read(root, 'skills/ponytail/SKILL.md')
-      : read(root, `rig/tier-1/skills/${skill}/SKILL.md`);
+  for (const [skill, sourcePath] of sharedSkills) {
+    const source = read(root, sourcePath);
     assert.equal(read(root, `.claude/skills/rig-${skill}/SKILL.md`), source, `Claude ${skill}`);
     assert.equal(read(root, `.agents/skills/rig-${skill}/SKILL.md`), source, `Codex ${skill}`);
   }
+});
+
+test('native skill names match the router index', () => {
+  const routerNames = [...read(root, 'rig/tier-1/routing.md').matchAll(/^\| `([^`]+)` \|/gm)]
+    .map((match) => match[1])
+    .sort();
+
+  assert.deepEqual(nativeSkillNames('.claude'), routerNames, 'Claude skill names');
+  assert.deepEqual(nativeSkillNames('.agents'), routerNames, 'Codex skill names');
 });
 
 test('Tier 1 bootstrap configures every instruction host in a fresh repository', () => {
@@ -48,8 +70,8 @@ test('Tier 1 bootstrap configures every instruction host in a fresh repository',
     execFileSync('sh', [path.join(root, 'rig', 'bootstrap.sh'), '--tier', '1', '--target', target]);
 
     assert.match(read(target, '.rig/routing.md'), /# Rig Router/);
-    assert.match(read(target, '.rig/rules/ponytail.md'), /always active/i);
-    for (const skill of sharedSkills) {
+    assert.match(read(target, '.rig/rules/rig.md'), /always active/i);
+    for (const [skill] of sharedSkills) {
       const shared = read(target, `.rig/skills/${skill}/SKILL.md`);
       const claude = read(target, `.claude/skills/rig-${skill}/SKILL.md`);
       const codex = read(target, `.agents/skills/rig-${skill}/SKILL.md`);
@@ -88,6 +110,8 @@ test('Tier 1 bootstrap configures every instruction host in a fresh repository',
     assert.equal(read(target, '.cursor/rules/existing.mdc'), 'existing\n');
     assert.match(read(target, '.cursor/rules/rig.mdc'), /alwaysApply: true/);
     assert.match(read(target, '.cursor/rules/rig.mdc'), /\.rig\/routing\.md/);
+    assert.match(read(target, '.windsurf/rules/rig.md'), /trigger: always_on/);
+    assert.doesNotMatch(read(target, '.clinerules/rig.md'), /^---\n/);
     for (const adapter of [
       '.windsurf/rules/rig.md',
       '.clinerules/rig.md',
@@ -113,6 +137,9 @@ test('Tier 1 bootstrap configures every instruction host in a fresh repository',
     const rigFiles = installed.filter((file) => file.includes(`${path.sep}.rig${path.sep}`));
     assert.ok(rigFiles.every((file) => file.endsWith('.md')));
     const body = installed.map((file) => fs.readFileSync(file, 'utf8')).join('\n');
+    for (const relativePath of backtickedRigPaths(body)) {
+      assert.equal(fs.existsSync(path.join(target, relativePath)), true, `${relativePath} should exist after install`);
+    }
     assert.doesNotMatch(body, /(?:API_KEY|BEGIN (?:RSA |OPENSSH )?PRIVATE KEY|(?<![a-z0-9])sk-[a-z0-9-]{10,})/i);
     assert.equal(fs.existsSync(path.join(target, '.env')), false);
     assert.equal(fs.existsSync(path.join(target, '.env.example')), false);

@@ -357,12 +357,12 @@ CACHE_GOOD = (
 CACHE_BAD = CACHE_SEED  # "no caching added": body reruns every call -> correct=0
 
 # ======================================================================================
-# 7. critic-email -- reproduces the critique's own example. The Scott Logic post ("Ponytail?
+# 7. critic-email -- reproduces the critique's own example. The Scott Logic post ("Rig?
 # YAGNI!", blog.scottlogic.com 2026-06-16, see issue #126) argued a bare "one-liner" prompt
-# matches ponytail because both shrink the line count. True on LOC -- and that is the point:
+# matches rig because both shrink the line count. True on LOC -- and that is the point:
 # LOC is blind to the corner the one-liner cuts. The canonical lazy email validator uses
 # re.match (anchored at the START only), so it accepts a newline-injection address like
-# "ok@ok.com\n<payload>" -- a real header/log-injection vector. ponytail's rule "never simplify
+# "ok@ok.com\n<payload>" -- a real header/log-injection vector. rig's rule "never simplify
 # away input validation at trust boundaries" keeps the full-string anchor (re.fullmatch).
 # Same shortness, one keeps the guard. This task is where the critique's example turns GREEN.
 # ======================================================================================
@@ -389,7 +389,7 @@ EMAIL_SEED = (
     '    """Return True if s is a valid email address, else False."""\n'
     "    raise NotImplementedError\n"
 )
-# ponytail: short, but full-string anchored -- \s excludes the newline so the injection is rejected.
+# rig: short, but full-string anchored -- \s excludes the newline so the injection is rejected.
 EMAIL_GOOD = (
     "import re\n"
     "_EMAIL = re.compile(r'[^@\\s]+@[^@\\s]+\\.[^@\\s]+')\n"
@@ -919,7 +919,7 @@ TASKS = {
                       "score": score_vibe, "open": True},
     "vibe-langgraph": {"prompt": "Create a new file with an example of how to implement LangGraph.",
                        "score": score_vibe, "open": True},
-    # candidate pool for the open/vibe set (screened baseline-vs-ponytail, keep the clear winners)
+    # candidate pool for the open/vibe set (screened baseline-vs-rig, keep the clear winners)
     "vibe-restapi": {"prompt": "Build me a REST API for a notes app in Python.",
                      "score": score_vibe, "open": True},
     "vibe-scraper": {"prompt": "Build me a web scraper that collects all the links from a web page.",

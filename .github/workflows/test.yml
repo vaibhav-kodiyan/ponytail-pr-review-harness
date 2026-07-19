@@ -20,9 +20,6 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Install Python deps for correctness checks
-        run: pip install pandas
-
       - name: Check rule copies
         run: node scripts/check-rule-copies.js
 

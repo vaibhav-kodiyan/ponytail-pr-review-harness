@@ -17,6 +17,9 @@ From this checkout:
 sh rig/bootstrap.sh --target /path/to/repository
 ```
 
+Tier 1 currently installs from a local Rig checkout. The pinned release/git-ref
+bootstrap path described in the foundational design is not shipped yet.
+
 The bootstrap prompts for the tier when run interactively. Automation can make
 the same choice explicitly:
 
