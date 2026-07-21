@@ -68,7 +68,7 @@ and `.agents/skills/`; the bootstrap copies them unchanged into target repos.
 | GitHub Copilot editor/CLI | `.github/copilot-instructions.md`, `AGENTS.md` |
 | Codex / VS Code Codex | `AGENTS.md`, `.agents/skills/rig-*/SKILL.md` |
 | Gemini CLI | `GEMINI.md` |
-| Antigravity | `AGENTS.md`, `GEMINI.md`, `.agents/rules/rig.md`, `.agents/skills/rig-*/SKILL.md`, `.agents/workflows/`, `antigravity-plugin/`, `hooks.json` |
+| Antigravity | `AGENTS.md`, `GEMINI.md`, `.agents/rules/rig.md`, `.agents/skills/rig-*/SKILL.md`, `.agents/workflows/` |
 | Kiro | `.kiro/steering/rig.md` |
 | OpenCode, CodeWhale, Swival | `AGENTS.md` |
 | Other agents | Configure the host to read `.rig/routing.md`, or add the one-line pointer from `rig/tier-1/adapters/pointer.md` to its project instructions. |

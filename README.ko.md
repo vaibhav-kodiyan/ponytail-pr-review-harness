@@ -70,7 +70,7 @@ Tier 1은 다음 호스트 진입점에 같은 지시문 세트를 설치한다:
 | GitHub Copilot editor/CLI | `.github/copilot-instructions.md`, `AGENTS.md` |
 | Codex / VS Code Codex | `AGENTS.md`, `.agents/skills/rig-*/SKILL.md` |
 | Gemini CLI | `GEMINI.md` |
-| Antigravity | `AGENTS.md`, `GEMINI.md`, `.agents/rules/rig.md`, `.agents/skills/rig-*/SKILL.md`, `.agents/workflows/`, `antigravity-plugin/`, `hooks.json` |
+| Antigravity | `AGENTS.md`, `GEMINI.md`, `.agents/rules/rig.md`, `.agents/skills/rig-*/SKILL.md`, `.agents/workflows/` |
 | Kiro | `.kiro/steering/rig.md` |
 | OpenCode, CodeWhale, Swival | `AGENTS.md` |
 | 기타 에이전트 | 호스트가 `.rig/routing.md`를 읽도록 설정하거나, `rig/tier-1/adapters/pointer.md`의 한 줄 포인터를 프로젝트 지시문에 추가한다. |

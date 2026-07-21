@@ -73,7 +73,7 @@ repositorios destino.
 | GitHub Copilot editor/CLI | `.github/copilot-instructions.md`, `AGENTS.md` |
 | Codex / VS Code Codex | `AGENTS.md`, `.agents/skills/rig-*/SKILL.md` |
 | Gemini CLI | `GEMINI.md` |
-| Antigravity | `AGENTS.md`, `GEMINI.md`, `.agents/rules/rig.md`, `.agents/skills/rig-*/SKILL.md`, `.agents/workflows/`, `antigravity-plugin/`, `hooks.json` |
+| Antigravity | `AGENTS.md`, `GEMINI.md`, `.agents/rules/rig.md`, `.agents/skills/rig-*/SKILL.md`, `.agents/workflows/` |
 | Kiro | `.kiro/steering/rig.md` |
 | OpenCode, CodeWhale, Swival | `AGENTS.md` |
 | Otros agentes | Configura el host para leer `.rig/routing.md`, o agrega el puntero de una línea de `rig/tier-1/adapters/pointer.md` a sus instrucciones de proyecto. |
