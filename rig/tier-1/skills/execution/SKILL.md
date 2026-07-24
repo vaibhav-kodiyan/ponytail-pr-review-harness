@@ -27,5 +27,10 @@ Parallelism does not weaken the two gates. No worker may edit Gate 1. A worker
 that discovers a contradiction stops and reports it. Completion means current
 evidence demonstrates the requested behavior and no required work remains.
 
+## Decision Questions
+
+When asking the user to choose, give concrete options plus a recommendation.
+Keep one decision per question unless the user asks for a broader menu.
+
 Source: superpowers subagent-driven development and verification-before-completion
 doctrine, adapted to Rig's gates.

@@ -40,5 +40,10 @@ it at the tool boundary.
 - `[superpowers]` Never bundle speculative fixes. Evidence must connect each
   hardening change to a plausible failure source.
 
+## Decision Questions
+
+When asking the user to choose, give concrete options plus a recommendation.
+Keep one decision per question unless the user asks for a broader menu.
+
 Provenance: every distinctive check is labeled. Shared root-cause, reproduction,
 single-change, regression-test, and actual-symptom checks are labeled jointly.

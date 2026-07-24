@@ -7,7 +7,8 @@
   "license": "MIT",
   "scripts": {
     "setup:dev": "python3 -m venv .venv && .venv/bin/python -m pip install -r requirements-dev.txt",
-    "test": "PATH=.venv/bin:$PATH node --test tests/*.test.js && npm test --prefix pi-extension",
+    "pretest": "PATH=.venv/bin:$PATH python3 -c \"import pandas\" 2>/dev/null || npm run setup:dev",
+    "test": "node scripts/check-rule-copies.js && node scripts/check-versions.js && PATH=.venv/bin:$PATH node --test tests/*.test.js && npm test --prefix pi-extension",
     "test:rig": "node --test tests/rig-bootstrap.test.js"
   }
 }

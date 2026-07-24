@@ -29,6 +29,11 @@ Planning is thorough; the resulting code is minimal. Do not hide uncertainty
 inside abstractions or create extension points for imagined futures. Escalate a
 Gate 1 contradiction instead of designing around it silently.
 
+## Decision Questions
+
+When asking the user to choose, give concrete options plus a recommendation.
+Keep one decision per question unless the user asks for a broader menu.
+
 ## Output
 
 - Current-state trace

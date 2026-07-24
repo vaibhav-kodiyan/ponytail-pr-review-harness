@@ -1,0 +1,4 @@
+{
+  "_comment": "Template only — Rig stays Tier B for Antigravity (PD-open-4). Copy entries into ~/.gemini/config/mcp_config.json by hand; load secrets from the shell env, never paste them here. Verify on install.",
+  "mcpServers": {}
+}

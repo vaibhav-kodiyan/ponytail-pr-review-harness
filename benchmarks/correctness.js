@@ -10,12 +10,13 @@ const { execSync } = require('child_process');
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
+const EXEC_TIMEOUT_MS = Number(process.env.RIG_CORRECTNESS_TIMEOUT_MS) || 60_000;
 
 // Extract fenced code blocks, tagged by language.
 function extractBlocks(text) {
   text = String(text || '');
   const matches = [...text.matchAll(/```(\w*)\r?\n([\s\S]*?)```/g)];
-  // ponytail: terse models often answer with bare, unfenced code. Treat the whole
+  // rig: terse models often answer with bare, unfenced code. Treat the whole
   // response as one block so the gate scores the code instead of reporting "no block".
   if (matches.length === 0 && text.trim()) return [{ lang: '', code: text }];
   return matches.map((m) => ({ lang: (m[1] || '').toLowerCase(), code: m[2] }));
@@ -35,14 +36,14 @@ function identifyTask(task) {
 // Run a command, return { ok, stderr }.
 function exec(cmd, opts = {}) {
   try {
-    execSync(cmd, { timeout: 10_000, encoding: 'utf8', stdio: 'pipe', ...opts });
+    execSync(cmd, { timeout: EXEC_TIMEOUT_MS, encoding: 'utf8', stdio: 'pipe', ...opts });
     return { ok: true, stderr: '' };
   } catch (e) {
     return { ok: false, stderr: (e.stderr || e.message || '').slice(0, 500) };
   }
 }
 
-// ponytail: probe once at load; macOS and many Linux images ship python3 only.
+// rig: probe once at load; macOS and many Linux images ship python3 only.
 let pythonCmd;
 function python() {
   if (pythonCmd) return pythonCmd;
@@ -58,7 +59,7 @@ function python() {
 
 // Write content to a temp file, return the path.
 function tmpFile(ext, content) {
-  const p = path.join(os.tmpdir(), `ponytail-bench-${Date.now()}-${Math.random().toString(36).slice(2)}${ext}`);
+  const p = path.join(os.tmpdir(), `rig-bench-${Date.now()}-${Math.random().toString(36).slice(2)}${ext}`);
   fs.writeFileSync(p, content);
   return p;
 }

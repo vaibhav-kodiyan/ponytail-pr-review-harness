@@ -1,6 +1,6 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
-  "name": "ponytail",
+  "name": "rig",
   "description": "Lazy senior dev mode for AI agents. The best code is the code you never wrote.",
   "owner": {
     "name": "Vaibhav Kodiyan",
@@ -8,7 +8,7 @@
   },
   "plugins": [
     {
-      "name": "ponytail",
+      "name": "rig",
       "description": "Forces the laziest solution that works. YAGNI, stdlib first, one line over fifty.",
       "source": "./",
       "category": "productivity"

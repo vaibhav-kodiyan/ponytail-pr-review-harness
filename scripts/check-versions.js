@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Version-consistency guard. Ponytail declares its version in seven files across
+// Version-consistency guard. Rig declares its version in seven files across
 // five host ecosystems, and every release bumps all of them by hand.
 //
 // tests/gemini-extension.test.js already checks the four plugin manifests agree
@@ -23,9 +23,10 @@ const VERSION_FILES = [
   '.codex-plugin/plugin.json',   // Codex plugin
   '.devin-plugin/plugin.json',   // Devin CLI plugin
   '.github/plugin/plugin.json',  // Copilot plugin
+  'antigravity-plugin/plugin.json', // Antigravity plugin (Customizations / agy plugin)
   'gemini-extension.json',       // Gemini CLI extension
   'package.json',                // pi-package / repo root
-  'ponytail-mcp/package.json',   // MCP server (private, internal-only)
+  'rig-mcp/package.json',   // MCP server (private, internal-only)
 ];
 
 function readVersion(relPath) {

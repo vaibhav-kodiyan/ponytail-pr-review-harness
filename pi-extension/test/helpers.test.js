@@ -6,26 +6,26 @@ import test from "node:test";
 
 import {
   filterSkillBodyForMode,
-  parsePonytailCommand,
+  parseRigCommand,
   readDefaultMode,
   resolveSessionMode,
   writeDefaultMode,
 } from "../index.js";
 
-test("parsePonytailCommand falls back to full when invoked bare and default is off", () => {
-  assert.deepEqual(parsePonytailCommand("", "off"), { type: "set-mode", mode: "full" });
+test("parseRigCommand falls back to full when invoked bare and default is off", () => {
+  assert.deepEqual(parseRigCommand("", "off"), { type: "set-mode", mode: "full" });
 });
 
-test("parsePonytailCommand parses modes, status, and default subcommand", () => {
-  assert.deepEqual(parsePonytailCommand("ultra", "full"), { type: "set-mode", mode: "ultra" });
-  assert.deepEqual(parsePonytailCommand("status", "full"), { type: "status" });
-  assert.deepEqual(parsePonytailCommand("default lite", "full"), { type: "set-default", mode: "lite" });
+test("parseRigCommand parses modes, status, and default subcommand", () => {
+  assert.deepEqual(parseRigCommand("ultra", "full"), { type: "set-mode", mode: "ultra" });
+  assert.deepEqual(parseRigCommand("status", "full"), { type: "status" });
+  assert.deepEqual(parseRigCommand("default lite", "full"), { type: "set-default", mode: "lite" });
 });
 
 test("resolveSessionMode prefers latest persisted session mode", () => {
   const entries = [
-    { type: "custom", customType: "ponytail-mode", data: { mode: "lite" } },
-    { type: "custom", customType: "ponytail-mode", data: { mode: "ultra" } },
+    { type: "custom", customType: "rig-mode", data: { mode: "lite" } },
+    { type: "custom", customType: "rig-mode", data: { mode: "ultra" } },
   ];
 
   assert.equal(resolveSessionMode(entries, "full"), "ultra");
@@ -39,12 +39,12 @@ test("resolveSessionMode returns fallback when entries is not an array", () => {
 });
 
 test("readDefaultMode and writeDefaultMode use XDG config path", () => {
-  const tempDir = mkdtempSync(join(tmpdir(), "ponytail-config-"));
+  const tempDir = mkdtempSync(join(tmpdir(), "rig-config-"));
   const previousXdg = process.env.XDG_CONFIG_HOME;
-  const previousDefault = process.env.PONYTAIL_DEFAULT_MODE;
-  const configPath = join(tempDir, "ponytail", "config.json");
+  const previousDefault = process.env.RIG_DEFAULT_MODE;
+  const configPath = join(tempDir, "rig", "config.json");
   process.env.XDG_CONFIG_HOME = tempDir;
-  delete process.env.PONYTAIL_DEFAULT_MODE;
+  delete process.env.RIG_DEFAULT_MODE;
 
   try {
     assert.equal(readDefaultMode(), "full");
@@ -55,14 +55,14 @@ test("readDefaultMode and writeDefaultMode use XDG config path", () => {
   } finally {
     if (previousXdg === undefined) delete process.env.XDG_CONFIG_HOME;
     else process.env.XDG_CONFIG_HOME = previousXdg;
-    if (previousDefault === undefined) delete process.env.PONYTAIL_DEFAULT_MODE;
-    else process.env.PONYTAIL_DEFAULT_MODE = previousDefault;
+    if (previousDefault === undefined) delete process.env.RIG_DEFAULT_MODE;
+    else process.env.RIG_DEFAULT_MODE = previousDefault;
     rmSync(tempDir, { recursive: true, force: true });
   }
 });
 
 test("filterSkillBodyForMode keeps only requested intensity examples and rows", () => {
-  const body = `---\nname: ponytail\n---\n| **lite** | keep lite |\n| **full** | keep full |\n| **ultra** | keep ultra |\n- lite: Lite example\n- full: Full example\n- ultra: Ultra example\nOther line`;
+  const body = `---\nname: rig\n---\n| **lite** | keep lite |\n| **full** | keep full |\n| **ultra** | keep ultra |\n- lite: Lite example\n- full: Full example\n- ultra: Ultra example\nOther line`;
 
   const filtered = filterSkillBodyForMode(body, "ultra");
 
@@ -76,9 +76,9 @@ test("filterSkillBodyForMode keeps only requested intensity examples and rows", 
 
 test("filterSkillBodyForMode keeps rule bullets that contain a colon", () => {
   // Regression: rule bullets outside the Intensity section (e.g. the
-  // "No unrequested abstractions:" rule or the `ponytail:` comment convention)
+  // "No unrequested abstractions:" rule or the `rig:` comment convention)
   // contain a colon and must not be mistaken for mode-example lines.
-  const skillPath = new URL("../../skills/ponytail/SKILL.md", import.meta.url);
+  const skillPath = new URL("../../skills/rig/SKILL.md", import.meta.url);
   const body = readFileSync(skillPath, "utf8");
 
   const filtered = filterSkillBodyForMode(body, "full");

@@ -6,10 +6,10 @@
         "hooks": [
           {
             "type": "command",
-            "command": "exec node \"${CLAUDE_PLUGIN_ROOT}/hooks/ponytail-activate.js\"",
-            "commandWindows": "if (Get-Command node -ErrorAction SilentlyContinue) { node \"$env:CLAUDE_PLUGIN_ROOT\\hooks\\ponytail-activate.js\" }",
+            "command": "exec node \"${CLAUDE_PLUGIN_ROOT}/hooks/rig-activate.js\"",
+            "commandWindows": "if (Get-Command node -ErrorAction SilentlyContinue) { node \"$env:CLAUDE_PLUGIN_ROOT\\hooks\\rig-activate.js\" }",
             "timeout": 5,
-            "statusMessage": "Loading ponytail mode..."
+            "statusMessage": "Loading rig mode..."
           }
         ]
       }
@@ -19,10 +19,10 @@
         "hooks": [
           {
             "type": "command",
-            "command": "exec node \"${CLAUDE_PLUGIN_ROOT}/hooks/ponytail-subagent.js\"",
-            "commandWindows": "if (Get-Command node -ErrorAction SilentlyContinue) { node \"$env:CLAUDE_PLUGIN_ROOT\\hooks\\ponytail-subagent.js\" }",
+            "command": "exec node \"${CLAUDE_PLUGIN_ROOT}/hooks/rig-subagent.js\"",
+            "commandWindows": "if (Get-Command node -ErrorAction SilentlyContinue) { node \"$env:CLAUDE_PLUGIN_ROOT\\hooks\\rig-subagent.js\" }",
             "timeout": 5,
-            "statusMessage": "Loading ponytail mode..."
+            "statusMessage": "Loading rig mode..."
           }
         ]
       }
@@ -32,10 +32,10 @@
         "hooks": [
           {
             "type": "command",
-            "command": "exec node \"${CLAUDE_PLUGIN_ROOT}/hooks/ponytail-mode-tracker.js\"",
-            "commandWindows": "if (Get-Command node -ErrorAction SilentlyContinue) { node \"$env:CLAUDE_PLUGIN_ROOT\\hooks\\ponytail-mode-tracker.js\" }",
+            "command": "exec node \"${CLAUDE_PLUGIN_ROOT}/hooks/rig-mode-tracker.js\"",
+            "commandWindows": "if (Get-Command node -ErrorAction SilentlyContinue) { node \"$env:CLAUDE_PLUGIN_ROOT\\hooks\\rig-mode-tracker.js\" }",
             "timeout": 5,
-            "statusMessage": "Tracking ponytail mode..."
+            "statusMessage": "Tracking rig mode..."
           }
         ]
       }

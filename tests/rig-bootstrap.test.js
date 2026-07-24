@@ -5,32 +5,68 @@ const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
 const { execFileSync } = require('node:child_process');
+const { runPayload } = require('../rig/lib/payload');
 
 const root = path.join(__dirname, '..');
 const pointer = 'Before acting, read `.rig/routing.md` and route this task through its skill table.';
 
 const sharedSkills = [
-  'grilling',
-  'product-design',
-  'ponytail',
-  'execution',
-  'tdd',
-  'debugging',
-  'code-review',
+  ['grilling', 'rig/tier-1/skills/grilling/SKILL.md'],
+  ['product-design', 'rig/tier-1/skills/product-design/SKILL.md'],
+  ['implementation', 'skills/rig/SKILL.md'],
+  ['execution', 'rig/tier-1/skills/execution/SKILL.md'],
+  ['tdd', 'rig/tier-1/skills/tdd/SKILL.md'],
+  ['debugging', 'rig/tier-1/skills/debugging/SKILL.md'],
+  ['code-review', 'rig/tier-1/skills/code-review/SKILL.md'],
 ];
 
 function read(target, relativePath) {
   return fs.readFileSync(path.join(target, relativePath), 'utf8');
 }
 
+function tree(target) {
+  const files = {};
+  const walk = (dir) => {
+    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+      const file = path.join(dir, entry.name);
+      if (entry.isDirectory()) walk(file);
+      else files[path.relative(target, file)] = fs.readFileSync(file, 'utf8');
+    }
+  };
+  walk(target);
+  return files;
+}
+
+function backtickedRigPaths(text) {
+  return [...text.matchAll(/`(\.rig\/[^`]+)`/g)]
+    .map((match) => match[1])
+    .filter((relativePath) => !/[<>{}*]/.test(relativePath));
+}
+
+function nativeSkillNames(host) {
+  return sharedSkills.map(([skill]) => {
+    const skillFile = `${host}/skills/rig-${skill}/SKILL.md`;
+    const match = read(root, skillFile).match(/^name:\s*(\S+)\s*$/m);
+    assert.ok(match, `${skillFile} should declare a name`);
+    return match[1];
+  }).sort();
+}
+
 test('committed Claude and Codex skills match their canonical Tier 1 sources', () => {
-  for (const skill of sharedSkills) {
-    const source = skill === 'ponytail'
-      ? read(root, 'skills/ponytail/SKILL.md')
-      : read(root, `rig/tier-1/skills/${skill}/SKILL.md`);
+  for (const [skill, sourcePath] of sharedSkills) {
+    const source = read(root, sourcePath);
     assert.equal(read(root, `.claude/skills/rig-${skill}/SKILL.md`), source, `Claude ${skill}`);
     assert.equal(read(root, `.agents/skills/rig-${skill}/SKILL.md`), source, `Codex ${skill}`);
   }
+});
+
+test('native skill names match the router index', () => {
+  const routerNames = [...read(root, 'rig/tier-1/routing.md').matchAll(/^\| `([^`]+)` \|/gm)]
+    .map((match) => match[1])
+    .sort();
+
+  assert.deepEqual(nativeSkillNames('.claude'), routerNames, 'Claude skill names');
+  assert.deepEqual(nativeSkillNames('.agents'), routerNames, 'Codex skill names');
 });
 
 test('Tier 1 bootstrap configures every instruction host in a fresh repository', () => {
@@ -48,13 +84,21 @@ test('Tier 1 bootstrap configures every instruction host in a fresh repository',
     execFileSync('sh', [path.join(root, 'rig', 'bootstrap.sh'), '--tier', '1', '--target', target]);
 
     assert.match(read(target, '.rig/routing.md'), /# Rig Router/);
-    assert.match(read(target, '.rig/rules/ponytail.md'), /always active/i);
-    for (const skill of sharedSkills) {
+    assert.match(read(target, '.rig/rules/rig.md'), /always active/i);
+    for (const [skill] of sharedSkills) {
       const shared = read(target, `.rig/skills/${skill}/SKILL.md`);
       const claude = read(target, `.claude/skills/rig-${skill}/SKILL.md`);
       const codex = read(target, `.agents/skills/rig-${skill}/SKILL.md`);
       assert.equal(claude, shared, `Claude ${skill}`);
       assert.equal(codex, shared, `Codex ${skill}`);
+    }
+
+    for (const name of ['rig', 'rig-review', 'rig-audit', 'rig-debt', 'rig-gain', 'rig-help']) {
+      assert.equal(
+        read(target, `.agents/workflows/${name}.md`),
+        read(root, `.agents/workflows/${name}.md`),
+        `Antigravity workflow ${name}`,
+      );
     }
 
     assert.match(read(target, 'CLAUDE.md'), /^# Existing Claude guidance$/m);
@@ -88,6 +132,8 @@ test('Tier 1 bootstrap configures every instruction host in a fresh repository',
     assert.equal(read(target, '.cursor/rules/existing.mdc'), 'existing\n');
     assert.match(read(target, '.cursor/rules/rig.mdc'), /alwaysApply: true/);
     assert.match(read(target, '.cursor/rules/rig.mdc'), /\.rig\/routing\.md/);
+    assert.match(read(target, '.windsurf/rules/rig.md'), /trigger: always_on/);
+    assert.doesNotMatch(read(target, '.clinerules/rig.md'), /^---\n/);
     for (const adapter of [
       '.windsurf/rules/rig.md',
       '.clinerules/rig.md',
@@ -113,10 +159,81 @@ test('Tier 1 bootstrap configures every instruction host in a fresh repository',
     const rigFiles = installed.filter((file) => file.includes(`${path.sep}.rig${path.sep}`));
     assert.ok(rigFiles.every((file) => file.endsWith('.md')));
     const body = installed.map((file) => fs.readFileSync(file, 'utf8')).join('\n');
+    for (const relativePath of backtickedRigPaths(body)) {
+      assert.equal(fs.existsSync(path.join(target, relativePath)), true, `${relativePath} should exist after install`);
+    }
     assert.doesNotMatch(body, /(?:API_KEY|BEGIN (?:RSA |OPENSSH )?PRIVATE KEY|(?<![a-z0-9])sk-[a-z0-9-]{10,})/i);
     assert.equal(fs.existsSync(path.join(target, '.env')), false);
     assert.equal(fs.existsSync(path.join(target, '.env.example')), false);
   } finally {
     fs.rmSync(target, { recursive: true, force: true });
+  }
+});
+
+test('Tier 1 default bootstrap stays in sync with the canonical payload manifest', () => {
+  const viaShell = fs.mkdtempSync(path.join(os.tmpdir(), 'rig-tier-1-shell-'));
+  const viaPayload = fs.mkdtempSync(path.join(os.tmpdir(), 'rig-tier-1-payload-'));
+
+  try {
+    execFileSync('sh', [path.join(root, 'rig', 'bootstrap.sh'), '--tier', '1', '--target', viaShell]);
+    runPayload(viaPayload, []);
+
+    assert.deepEqual(tree(viaShell), tree(viaPayload));
+  } finally {
+    fs.rmSync(viaShell, { recursive: true, force: true });
+    fs.rmSync(viaPayload, { recursive: true, force: true });
+  }
+});
+
+test('Tier 1 bootstrap --hosts antigravity installs the co-read tree via payload.js', () => {
+  const target = fs.mkdtempSync(path.join(os.tmpdir(), 'rig-tier-1-ag-'));
+
+  try {
+    execFileSync('sh', [
+      path.join(root, 'rig', 'bootstrap.sh'),
+      '--tier', '1',
+      '--target', target,
+      '--hosts', 'antigravity',
+    ]);
+
+    assert.ok(fs.existsSync(path.join(target, '.agents/skills/rig-implementation/SKILL.md')));
+    assert.ok(fs.existsSync(path.join(target, '.agents/rules/rig.md')));
+    assert.ok(fs.existsSync(path.join(target, '.agents/workflows/rig.md')));
+    assert.ok(fs.existsSync(path.join(target, 'AGENTS.md')));
+    assert.ok(fs.existsSync(path.join(target, 'GEMINI.md')));
+    assert.ok(fs.existsSync(path.join(target, '.rig/skills/grilling/SKILL.md')));
+    assert.equal(fs.existsSync(path.join(target, '.claude/skills/rig-implementation/SKILL.md')), false);
+    assert.equal(fs.existsSync(path.join(target, '.cursor/rules/rig.mdc')), false);
+  } finally {
+    fs.rmSync(target, { recursive: true, force: true });
+  }
+});
+
+test('Tier 1 --hosts exits with a clear node message instead of stranding the user', () => {
+  const target = fs.mkdtempSync(path.join(os.tmpdir(), 'rig-tier-1-nonode-'));
+  // Sandbox PATH holds only what the script needs before the node check (dirname);
+  // node is deliberately absent so the preflight guard fires.
+  const bin = fs.mkdtempSync(path.join(os.tmpdir(), 'rig-nonode-bin-'));
+  const dirnameBin = execFileSync('sh', ['-c', 'command -v dirname']).toString().trim();
+  fs.symlinkSync(dirnameBin, path.join(bin, 'dirname'));
+
+  try {
+    assert.throws(
+      () => execFileSync('/bin/sh', [
+        path.join(root, 'rig', 'bootstrap.sh'),
+        '--tier', '1',
+        '--target', target,
+        '--hosts', 'claude',
+      ], { env: { PATH: bin }, stdio: 'pipe' }),
+      (err) => {
+        assert.equal(err.status, 1);
+        assert.match(String(err.stderr), /node/);
+        return true;
+      },
+    );
+    assert.equal(fs.existsSync(path.join(target, '.rig')), false, 'no partial install left behind');
+  } finally {
+    fs.rmSync(target, { recursive: true, force: true });
+    fs.rmSync(bin, { recursive: true, force: true });
   }
 });

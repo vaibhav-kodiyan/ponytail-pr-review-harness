@@ -14,7 +14,7 @@ function stripFrontmatter(text) {
 
 const agents = read('AGENTS.md');
 // The Rig routing pointer lives in AGENTS.md for this repo only; the per-host
-// ponytail copies stay pure Ponytail, so it is not part of the canonical body.
+// rig copies stay pure Rig, so it is not part of the canonical body.
 const canonical = agents
   .replace(/^Before acting, read `rig\/tier-1\/routing\.md`[^\n]*\n+/, '')
   .replace(/\n\n\(Yes, this file also applies[\s\S]*?\)$/, '')
@@ -22,12 +22,12 @@ const canonical = agents
 
 // Compact copies: same body as AGENTS.md, host-specific frontmatter stripped.
 const copies = [
-  ['.cursor/rules/ponytail.mdc', stripFrontmatter],
-  ['.windsurf/rules/ponytail.md', text => text.trim()],
-  ['.clinerules/ponytail.md', text => text.trim()],
-  ['.agents/rules/ponytail.md', text => text.trim()],
+  ['.cursor/rules/rig.mdc', stripFrontmatter],
+  ['.windsurf/rules/rig.md', text => text.trim()],
+  ['.clinerules/rig.md', text => text.trim()],
+  ['.agents/rules/rig.md', text => text.trim()],
   ['.github/copilot-instructions.md', text => text.trim()],
-  ['.kiro/steering/ponytail.md', stripFrontmatter],
+  ['.kiro/steering/rig.md', stripFrontmatter],
 ];
 
 let failed = false;
@@ -41,7 +41,7 @@ for (const [relPath, normalize] of copies) {
 }
 
 // SKILL.md is the runtime source of truth and is longer than the compact body,
-// so it cannot be byte-compared. ponytail: canary, not full equality. Assert the
+// so it cannot be byte-compared. rig: canary, not full equality. Assert the
 // load-bearing rules survive verbatim in both the source and AGENTS.md. Changing
 // a rule's wording trips this, which is the reminder to propagate it everywhere.
 // Upgrade path: generate the copies from SKILL.md if this ever misses a real drift.
@@ -60,8 +60,8 @@ const INVARIANTS = [
   'Lazy code without its check is unfinished', // one-check promoted to headline
 ];
 
-const skill = read('skills/ponytail/SKILL.md');
-const sources = [['skills/ponytail/SKILL.md', skill], ['AGENTS.md', agents]];
+const skill = read('skills/rig/SKILL.md');
+const sources = [['skills/rig/SKILL.md', skill], ['AGENTS.md', agents]];
 for (const phrase of INVARIANTS) {
   for (const [label, text] of sources) {
     if (!text.includes(phrase)) {

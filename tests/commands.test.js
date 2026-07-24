@@ -1,9 +1,10 @@
 #!/usr/bin/env node
-// Every ponytail command the pi extension registers must also ship as a
+// Every rig command the pi extension registers must also ship as a
 // file-based command for the hosts that need one: Claude Code (commands/*.toml,
-// which Gemini CLI reuses) and OpenCode (.opencode/command/*.md). /ponytail-help
-// was advertised in the README and the help card but missing both files; this
-// guards that drift -- a registered command with no adapter file fails here.
+// which Gemini CLI reuses), OpenCode (.opencode/command/*.md), and Antigravity
+// (.agents/workflows/*.md). /rig-help was advertised in the README and the help
+// card but missing both files; this guards that drift -- a registered command
+// with no adapter file fails here.
 
 const test = require('node:test');
 const assert = require('node:assert/strict');
@@ -17,7 +18,7 @@ const piSource = fs.readFileSync(path.join(root, 'pi-extension', 'index.js'), 'u
 const commands = [...piSource.matchAll(/registerCommand\(["']([\w-]+)["']/g)].map((m) => m[1]);
 
 test('pi registers at least the base command', () => {
-  assert.ok(commands.includes('ponytail'), 'expected pi to register a ponytail command');
+  assert.ok(commands.includes('rig'), 'expected pi to register a rig command');
 });
 
 test('every registered command ships a Claude commands/*.toml', () => {
@@ -34,6 +35,15 @@ test('every registered command ships an OpenCode .opencode/command/*.md', () => 
     assert.ok(
       fs.existsSync(path.join(root, '.opencode', 'command', `${name}.md`)),
       `missing .opencode/command/${name}.md`,
+    );
+  }
+});
+
+test('every registered command ships an Antigravity .agents/workflows/*.md', () => {
+  for (const name of commands) {
+    assert.ok(
+      fs.existsSync(path.join(root, '.agents', 'workflows', `${name}.md`)),
+      `missing .agents/workflows/${name}.md`,
     );
   }
 });

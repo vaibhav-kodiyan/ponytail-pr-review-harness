@@ -51,5 +51,10 @@ agreement, and push back with technical evidence when the suggestion is wrong.
 Mechanical fixes may re-enter the two-gate pipeline with narrow scope; judgment
 changes return to the appropriate gate. `[superpowers+gstack]`
 
+## Decision Questions
+
+When asking the user to choose, give concrete options plus a recommendation.
+Keep one decision per question unless the user asks for a broader menu.
+
 Provenance: each check is labeled `superpowers`, `mattpocock`, `gstack`, or a
 deduplicated combination.
